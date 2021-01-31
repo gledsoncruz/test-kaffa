@@ -162,7 +162,9 @@
                           <button class="btn btn-secondary" @click="addTask" type="button" id="button-addon2">Add</button>
                         </div>                        
                     </div>
+                    <p style="color: brown;" v-if="taskExists">Task already exists...</p>
                 </div>  
+                
                 <hr />
                 
                 <div v-if="tasks.length">
@@ -197,7 +199,7 @@
             errors_digits: [],
             success: [],
             success_digits: [],
-            messageTasks: "",
+            taskExists: false,
             rectA: {
                 left: 3, // xmin
                 top: 5, // ymin
@@ -213,8 +215,8 @@
             messageIntersects: "",
             nameTask: "",
             tasks: [
-                {name: 'Lavar louça', pending: false},
-                {name: 'Pagar conta de luz', pending: true}
+                // {name: 'Lavar louça', pending: false},
+                // {name: 'Pagar conta de luz', pending: true}
             ]
         },
         watch: {
@@ -236,6 +238,12 @@
                     this.clearMessages();
                 }
             },
+            tasks: {
+                deep: true,
+                handler() {
+                    localStorage.setItem('tasks', JSON.stringify(this.tasks));
+                }                
+            },
         },
         methods: {     
             stateClass: function(task) {
@@ -248,7 +256,7 @@
             },
             // add task
             addTask: function() {                
-                console.log(this.nameTask);
+                this.taskExists = false;
                 const taskNew = this.tasks.filter(task => task.name.toLowerCase() == this.nameTask.toLowerCase()).length == 0;
                 if (taskNew) {
                     this.tasks.push({
@@ -256,6 +264,9 @@
                         pending: true
                     });
                     this.nameTask = '';
+                    this.taskExists = false;
+                } else {
+                    this.taskExists = true;
                 }
                 
             },
@@ -350,6 +361,11 @@
                 return true;
                 
             },
+        },
+        created() {
+            const json = localStorage.getItem('tasks');
+            const array = JSON.parse(json);
+            this.tasks = Array.isArray(array) ? array : [];
         },
       });
     </script>
