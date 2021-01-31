@@ -52,7 +52,7 @@
                     placeholder="CNPJ"
                     v-model="cnpj"
                 />
-                <small id="emailHelp" class="form-text text-muted">"00.000.000/0000-00" ou "00000000000000"</small>
+                <small id="emailHelp" class="form-text text-muted">"00.000.000/0000-00" ou "00000000000000". Example valid: "55.467.036/0001-71"</small>
                 <br />
                 <p v-if="errors.length">
                     <div v-for="error in errors">
@@ -146,7 +146,8 @@
 
             <div class="jumbotron">
                 <h3>4 - Compute area of intersection between two rectangles</h3>
-                <hr class="my-4" />      
+                <hr class="my-4" />
+                <p>Not done</p>
                 
             </div>
 
@@ -157,16 +158,14 @@
                 <hr class="my-4" />  
                 <div class="col-6">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" aria-describedby="messageError" placeholder="Task" v-model="nameTask" @keydown.enter="addTask" aria-describedby="button-addon2">
+                        <input type="text" class="form-control" aria-describedby="messageError" placeholder="Type task here" v-model="nameTask" @keydown.enter="addTask" aria-describedby="button-addon2">
                         <div class="input-group-append">
                           <button class="btn btn-secondary" @click="addTask" type="button" id="button-addon2">Add</button>
                         </div>                        
                     </div>
                     <p style="color: brown;" v-if="taskExists">Task already exists...</p>
-                </div>  
-                
+                </div>
                 <hr />
-                
                 <div v-if="tasks.length">
                     <div class="task-list" v-for="(task, i) in tasks" :key="task.name">                        
                         <div class="col-6">
@@ -175,21 +174,56 @@
                                 <button class="ml-auto p-2 btn btn-danger" @click="removeTask(i)" type="button" id="button-addon2"><i class="fas fa-trash-alt"></i></button>
                             </div>                            
                         </div>
-                        
                     </div>
-                    
                 </div>
                 
                 <div v-else>
                     <p>No tasks</p>
-                </div>        
-                  
+                </div>
+            </div>
+
+            <!--QUESTION 6-->
+
+            <div class="jumbotron">
+                <h3>6 - Rest Client - World Clock</h3>
+                <hr class="my-4" />
+                <div class="alert alert-warning text-center" role="alert">
+                    <div v-if="errored">
+                        <b>Sorry, a problem happened</b>
+                    </div>
+                    <div v-else>
+                        <b v-if="loading">Loading...</b>
+                        <b v-else>{{format_date(currentDateTime)}}</b>
+                    </div>
+                    
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary" @click="refreshDateTime">Refresh</button>
+                </div>
+                
+            </div>
+
+             <!--QUESTION 7-->
+
+             <div class="jumbotron">
+                <h3>7 - Rest Server - World Clock</h3>
+                <hr class="my-4" />      
+                <p>Not done</p>
+            </div>
+
+             <!--QUESTION 8-->
+
+             <div class="jumbotron">
+                <h3>8 - Entity Relationship Diagram - Simple Order Manager</h3>
+                <hr class="my-4" />      
                 
             </div>
 
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
     <script>
       var app = new Vue({
         el: "#app",
@@ -217,7 +251,10 @@
             tasks: [
                 // {name: 'Lavar louça', pending: false},
                 // {name: 'Pagar conta de luz', pending: true}
-            ]
+            ],
+            currentDateTime: null,
+            loading: true,
+            errored: false
         },
         watch: {
             cnpj: function(val) {
@@ -361,11 +398,41 @@
                 return true;
                 
             },
+
+            refreshDateTime: function() {                
+                axios
+                .get('http://worldclockapi.com/api/json/utc/now')
+                .then(response => {
+                    this.currentDateTime = response.data.currentDateTime
+                })
+                .catch(error => {
+                    console.log(error)
+                    this.errored = true
+                })
+                .finally(() => this.loading = false)
+            },
+            format_date: function(value){
+                if (value) {
+                return moment(String(value)).format('DD/MM/YYYY HH:mm', "America/Brasilia");
+                }
+            },
         },
         created() {
             const json = localStorage.getItem('tasks');
             const array = JSON.parse(json);
             this.tasks = Array.isArray(array) ? array : [];
+
+            axios
+            .get('http://worldclockapi.com/api/json/utc/now')
+            .then(response => {
+                this.currentDateTime = response.data.currentDateTime
+            })
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+            .finally(() => this.loading = false)
+           
         },
       });
     </script>
