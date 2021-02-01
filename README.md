@@ -201,7 +201,9 @@ REST server returning a JSON like:
 }
 ```
 
-    not done...
+The exercise is inside the clock_api folder and deploy and is running on heroku to view the output:
+
+https://api-test-kaffa.herokuapp.com/date/now
 
 ## 8) Entity Relationship Diagram - Simple Order Manager
 
