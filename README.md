@@ -1,5 +1,12 @@
 # Kaffa - Pre-qualification test (v1.8)
 
+## Notes
+
+Third Libraries:
+
+- Axios (https://github.com/axios/axios)
+- Moment (https://momentjs.com/)
+
 ## Exercises
 
 Answer the exercises following the criteria:
