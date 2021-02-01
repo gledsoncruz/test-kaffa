@@ -4,6 +4,7 @@
 
 Third Libraries:
 
+- Vuejs (https://vuejs.org/)
 - Axios (https://github.com/axios/axios)
 - Moment (https://momentjs.com/)
 
