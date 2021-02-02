@@ -136,12 +136,13 @@ var app = new Vue({
                 });
             });
 
-            if (intersection.length > 1) {
+            if (intersection.length > 0) {
                 this.messageIntersects = 'Intersetcs RectA x RectB is true';
                 this.areaIntersects = intersection.length;
                 return true;
             } else {
                 this.messageIntersects = 'Intersetcs RectA x RectB is false';
+                this.areaIntersects = 0;
                 return false;
             }
         },
