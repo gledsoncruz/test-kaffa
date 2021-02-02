@@ -121,14 +121,41 @@ true if they intersect, false otherwise.
 
 ```javascript
 // check intersection
-intersects:  function(a, b) {
-	if (Math.max(a.left, b.left) < Math.min(a.right, b.right) &&
-			Math.max(a.top, b.top) < Math.min(a.bottom, b.bottom)) {
-		return  true;
-	} else {
-		return  false;
-	}
-},
+	intersects: function (a, b) {
+		let rect1 = this.createRect(a);
+		let rect2 = this.createRect(b);
+
+		let intersection = [];
+		rect1.filter(function (x) {
+			rect2.filter(function (y) {
+
+				if (x === y) {
+					return true;
+				}
+				if (x == null || y == null) return false;
+				if (x.length !== y.length) return false;
+
+				for (var i = 0; i < x.length; ++i) {
+					if (x[i] !== y[i]) return false;
+				}
+				intersection.push([x]);
+				//return true;
+
+
+			});
+		});
+
+		if (intersection.length > 0) {
+			this.messageIntersects = 'Intersetcs RectA x RectB is true';
+			// area rectangle
+			this.areaIntersects = intersection.length;
+			return true;
+		} else {
+			this.messageIntersects = 'Intersetcs RectA x RectB is false';
+			this.areaIntersects = 0;
+			return false;
+		}
+	},
 ```
 
 ## 4) Compute area of intersection between two rectangles
