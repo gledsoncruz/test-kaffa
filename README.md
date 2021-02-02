@@ -259,7 +259,9 @@ Extras:
   SQL list orders with number of items:
 
   ```sql
-  select o.id as order_number, c.name as client_name, count(*) as total_items, sum(p.price * i.quantity) as total_price
-  from clients c join orders o on c.id = o.client_id join items i on i.order_id = o.id join products p on i.product_id = p.id
+  select o.id as order_number, c.name as client_name, count(*) as total_items,
+  		sum(p.price * i.quantity) as total_price
+  from clients c join orders o on c.id = o.client_id join items i on i.order_id = o.id
+  		join products p on i.product_id = p.id
   group by i.order_id, c.name;
   ```
