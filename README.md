@@ -8,6 +8,16 @@ Third Libraries:
 - Axios (https://github.com/axios/axios)
 - Moment (https://momentjs.com/)
 
+## Instructions
+
+The app is running on github pages and can be accessed by the link below:
+
+https://gledsoncruz.github.io/test-kaffa/
+
+...or just make a clone of the repository and simply open the index.html file in your browser.
+
+**Importante**: Item 6 of the exercise is not working on github pages because the url of the request server is not https, generating a security problem, but to see that same item working, just run the index.html locally in your browser after you have done clone.
+
 ## Exercises
 
 Answer the exercises following the criteria:
@@ -201,7 +211,7 @@ REST server returning a JSON like:
 }
 ```
 
-The exercise is inside the clock_api folder and deploy and is running on heroku to view the output:
+The code exercise is inside the clock_api folder and deploy and is running on heroku to view the output:
 
 https://api-test-kaffa.herokuapp.com/date/now
 
