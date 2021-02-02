@@ -221,3 +221,45 @@ Extras:
 - SQL: list ORDERS with number of items
 - Which indexes should be created in this model?
   **Important**: this exercise is documentation only - there’s no executable to run in this case.
+
+  As an example, sqlite was used.
+
+  ```sql
+
+  CREATE TABLE "clients" (
+  	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
+  	"name"	TEXT,
+  	"email"	TEXT
+  );
+
+  CREATE TABLE "orders" (
+  	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
+  	"date"	TEXT,
+  	"client_id"	integer,
+  	FOREIGN KEY("client_id") REFERENCES "clients"("id")
+  );
+
+  CREATE TABLE "products" (
+  	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
+  	"name"	TEXT,
+  	"price"	NUMERIC
+  );
+
+  CREATE TABLE "items" (
+  	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
+  	"quantity"	INTEGER,
+  	"product_id"	integer,
+  	"order_id"	integer,
+  	FOREIGN KEY("order_id") REFERENCES "orders"("id"),
+  	FOREIGN KEY("product_id") REFERENCES "products"("id")
+  );
+
+  ```
+
+  SQL list orders with number of items:
+
+  ```sql
+  select o.id as order_number, c.name as client_name, count(*) as total_items, sum(p.price * i.quantity) as total_price
+  from clients c join orders o on c.id = o.client_id join items i on i.order_id = o.id join products p on i.product_id = p.id
+  group by i.order_id, c.name;
+  ```
