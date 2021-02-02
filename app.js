@@ -7,18 +7,9 @@ var app = new Vue({
         success: [],
         success_digits: [],
         taskExists: false,
-        rectA: {
-            left: 3, // xmin
-            top: 5, // ymin
-            right: 11, // xmax
-            bottom: 11 // ymax
-        },
-        rectB: {
-            left: 7,
-            top: 2,
-            right: 13,
-            bottom: 7
-        },
+        rectA: [[3, 5], [11, 11]],
+        rectB: [[7, 2], [13, 7]],
+        areaIntersects: 0,
         messageIntersects: "",
         nameTask: "",
         tasks: [
@@ -91,17 +82,68 @@ var app = new Vue({
             this.tasks[i].pending = !this.tasks[i].pending;
         },
 
+        //create rectangle
+        createRect: function (rect) {
+            ymax = Math.max(rect[0][1], rect[1][1]);
+            ymin = Math.min(rect[0][1], rect[1][1]);
+            xmax = Math.max(rect[0][0], rect[1][0]);
+            xmin = Math.min(rect[0][0], rect[1][0]);
+
+            width = 0;
+            height = 0;
+            result = [];
+
+            width = (xmax + 1) - xmin;
+            height = (ymax + 1) - ymin;
+            area = width * height;
+
+            yinitial = ymin;
+            vfinalLoop = (area + xmin);
+
+            for (i = xmin; i < vfinalLoop; i++) {
+                if (ymin == ymax + 1) {
+                    xmin++;
+                    ymin = yinitial;
+                }
+                result.push([xmin, ymin++]);
+            }
+
+            return result;
+        },
+
         // check intersection
         intersects: function (a, b) {
-            if (Math.max(a.left, b.left) < Math.min(a.right, b.right) && Math.max(a.top, b.top) < Math.min(a.bottom, b.bottom)) {
+            let rect1 = this.createRect(a);
+            let rect2 = this.createRect(b);
+
+            let intersection = [];
+            rect1.filter(function (x) {
+                rect2.filter(function (y) {
+
+                    if (x === y) {
+                        return true;
+                    }
+                    if (x == null || y == null) return false;
+                    if (x.length !== y.length) return false;
+
+                    for (var i = 0; i < x.length; ++i) {
+                        if (x[i] !== y[i]) return false;
+                    }
+                    intersection.push([x]);
+                    return true;
+
+
+                });
+            });
+
+            if (intersection.length > 1) {
                 this.messageIntersects = 'Intersetcs RectA x RectB is true';
+                this.areaIntersects = intersection.length;
                 return true;
             } else {
                 this.messageIntersects = 'Intersetcs RectA x RectB is false';
                 return false;
             }
-
-
         },
         // clear messages
         clearMessages: function () {

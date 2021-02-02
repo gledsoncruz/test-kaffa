@@ -95,16 +95,16 @@
                         <label for="left" class="col-form-label">RectA:</label>
                       </div>
                     <div class="col-2">
-                      <input type="text" id="left1" class="form-control" placeholder="Left" v-model="rectA.left">
+                      <input type="text" id="left1" class="form-control" placeholder="Left" v-model="rectA[0][0]">
                     </div>
                     <div class="col-2">
-                      <input type="text" class="form-control" placeholder="Top" v-model="rectA.top">
+                      <input type="text" class="form-control" placeholder="Top" v-model="rectA[0][1]">
                     </div>
                     <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Right" v-model="rectA.right">
+                        <input type="text" class="form-control" placeholder="Right" v-model="rectA[1][0]">
                     </div>
                     <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Bottom" v-model="rectA.bottom">
+                        <input type="text" class="form-control" placeholder="Bottom" v-model="rectA[1][1]">
                     </div>
                 </div>
                 <br />
@@ -114,16 +114,16 @@
                         <label for="left" class="col-form-label">RectB:</label>
                       </div>
                     <div class="col-2">
-                      <input type="text" id="left2" class="form-control" placeholder="Left" v-model="rectB.left">
+                      <input type="text" id="left2" class="form-control" placeholder="Left" v-model="rectB[0][0]">
                     </div>
                     <div class="col-2">
-                      <input type="text" class="form-control" placeholder="Top" v-model="rectB.top">
+                      <input type="text" class="form-control" placeholder="Top" v-model="rectB[0][1]">
                     </div>
                     <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Right" v-model="rectB.right">
+                        <input type="text" class="form-control" placeholder="Right" v-model="rectB[1][0]">
                     </div>
                     <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Bottom" v-model="rectB.bottom">
+                        <input type="text" class="form-control" placeholder="Bottom" v-model="rectB[1][1]">
                     </div>
                 </div>
                 <br />
@@ -140,14 +140,17 @@
                     </div>
                 </div>
                 
+                
             </div>
 
             <!--QUESTION 4-->
 
             <div class="jumbotron">
                 <h3>4 - Compute area of intersection between two rectangles</h3>
-                <hr class="my-4" />
-                <p>Not done</p>
+                <hr class="my-4" />                
+                <div class="alert alert-warning" role="alert">
+                    Rectangle area above: {{areaIntersects}}
+                </div>
                 
             </div>
 

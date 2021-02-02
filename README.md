@@ -138,7 +138,70 @@ the area of intersection between the two.
 **Note**: _the points are **included** in the rectangle and have a dimension of 1 unit; the rectangle (0, 0; 1, 1) have an area of 4 units._
 
 ```javascript
-//Not done
+ 	//create rectangle
+	createRect: function (rect) {
+		ymax = Math.max(rect[0][1], rect[1][1]);
+		ymin = Math.min(rect[0][1], rect[1][1]);
+		xmax = Math.max(rect[0][0], rect[1][0]);
+		xmin = Math.min(rect[0][0], rect[1][0]);
+
+		width = 0;
+		height = 0;
+		result = [];
+
+		width = (xmax + 1) - xmin;
+		height = (ymax + 1) - ymin;
+		area = width * height;
+
+		yinitial = ymin;
+		vfinalLoop = (area + xmin);
+
+		for (i = xmin; i < vfinalLoop; i++) {
+			if (ymin == ymax + 1) {
+				xmin++;
+				ymin = yinitial;
+			}
+			result.push([xmin, ymin++]);
+		}
+
+		return result;
+	},
+
+	// check intersection
+	intersects: function (a, b) {
+		let rect1 = this.createRect(a);
+		let rect2 = this.createRect(b);
+
+		let intersection = [];
+		rect1.filter(function (x) {
+			rect2.filter(function (y) {
+
+				if (x === y) {
+					return true;
+				}
+				if (x == null || y == null) return false;
+				if (x.length !== y.length) return false;
+
+				for (var i = 0; i < x.length; ++i) {
+					if (x[i] !== y[i]) return false;
+				}
+				intersection.push([x]);
+				return true;
+
+
+			});
+		});
+
+		if (intersection.length > 1) {
+			this.messageIntersects = 'Intersetcs RectA x RectB is true';
+			// area rectangle
+			this.areaIntersects = intersection.length;
+			return true;
+		} else {
+			this.messageIntersects = 'Intersetcs RectA x RectB is false';
+			return false;
+		}
+	},
 ```
 
 ## 5) Simple Todo List
